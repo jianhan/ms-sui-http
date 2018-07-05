@@ -1,0 +1,12 @@
+service:
+  name: go.micro.srv.http
+  register_ttl: 1200000
+  register_interval: 10
+  version: 1.0.0
+  metadata:
+    description: Http service
+enable_debug: true
+nats_streaming:
+  cluster: test-cluster
+  client_id: test-client
+
