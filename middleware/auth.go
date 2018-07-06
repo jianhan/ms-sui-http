@@ -29,7 +29,7 @@ type JSONWebKeys struct {
 	X5c []string `json:"x5c"`
 }
 
-var jwtMiddleware = jwtmiddleware.New(jwtmiddleware.Options{
+var JwtMiddleware = jwtmiddleware.New(jwtmiddleware.Options{
 	ValidationKeyGetter: func(token *jwt.Token) (interface{}, error) {
 		// Verify 'aud' claim
 		aud := os.Getenv("AUTH0_AUDIENCE")

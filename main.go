@@ -1,17 +1,17 @@
 package main
 
 import (
-	"github.com/gorilla/mux"
+	"log"
 	"net/http"
 	"time"
-	"log"
+
+	"github.com/jianhan/ms-sui-http/handler"
 )
 
 func main() {
-	r := mux.NewRouter()
 	srv := &http.Server{
-		Handler:      r,
-		Addr:         "127.0.0.1:8000",
+		Handler:      handler.Router(),
+		Addr:         "127.0.0.1:9000",
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
