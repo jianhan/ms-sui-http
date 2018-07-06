@@ -2,17 +2,18 @@ package handler
 
 import (
 "net/http"
-"encoding/json"
+	"encoding/json"
 )
 
-func ResponseJSON(message string, w http.ResponseWriter, statusCode int) {
-	response := Response{message}
-	jsonResponse, err := json.Marshal(response)
+func SendJSONResponse(w http.ResponseWriter, statusCode int, data interface{}) {
+	body, err := json.Marshal(data)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(statusCode)
-	w.Write(jsonResponse)
+	if _, err = w.Write(body); err != nil {
+		// TODO: log
+	}
 }
