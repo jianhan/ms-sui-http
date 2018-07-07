@@ -9,10 +9,10 @@ import (
 )
 
 func Router() *mux.Router {
-	router := mux.NewRouter()
+	router := mux.NewRouter().StrictSlash(true)
 	router.Handle(
 		"/ideas/add",
-		negroni.New(negroni.HandlerFunc(middleware.JwtMiddleware.HandlerWithNext), negroni.Wrap(http.HandlerFunc(addIdea))),
+		negroni.New(negroni.HandlerFunc(middleware.JWTMiddleware.HandlerWithNext), negroni.Wrap(http.HandlerFunc(addIdea))),
 	).Methods("GET")
 	return router
 }

@@ -29,19 +29,19 @@ type JSONWebKeys struct {
 	X5c []string `json:"x5c"`
 }
 
-var JwtMiddleware = jwtmiddleware.New(jwtmiddleware.Options{
+var JWTMiddleware = jwtmiddleware.New(jwtmiddleware.Options{
 	ValidationKeyGetter: func(token *jwt.Token) (interface{}, error) {
 		// Verify 'aud' claim
 		aud := os.Getenv("AUTH0_AUDIENCE")
 		checkAud := token.Claims.(jwt.MapClaims).VerifyAudience(aud, false)
 		if !checkAud {
-			return token, errors.New("invalid audience.")
+			return token, errors.New("invalid audience found")
 		}
 		// Verify 'iss' claim
 		iss := "https://" + os.Getenv("AUTH0_DOMAIN") + "/"
 		checkIss := token.Claims.(jwt.MapClaims).VerifyIssuer(iss, false)
 		if !checkIss {
-			return token, errors.New("invalid issuer.")
+			return token, errors.New("invalid issuer found")
 		}
 
 		cert, err := getPemCert(token)
@@ -78,7 +78,7 @@ func getPemCert(token *jwt.Token) (string, error) {
 	}
 
 	if cert == "" {
-		err := errors.New("Unable to find appropriate key.")
+		err := errors.New("unable to find appropriate key.")
 		return cert, err
 	}
 
@@ -87,9 +87,7 @@ func getPemCert(token *jwt.Token) (string, error) {
 
 func checkScope(scope string, tokenString string) bool {
 	token, _ := jwt.ParseWithClaims(tokenString, &CustomClaims{}, nil)
-
 	claims, _ := token.Claims.(*CustomClaims)
-
 	hasScope := false
 	result := strings.Split(claims.Scope, " ")
 	for i := range result {
