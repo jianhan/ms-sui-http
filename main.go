@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/jianhan/ms-sui-http/handler"
+	"github.com/jianhan/ms-sui-ideas/proto/idea"
 	"github.com/joho/godotenv"
 )
 
@@ -16,7 +17,7 @@ func main() {
 	}
 
 	srv := &http.Server{
-		Handler:      handler.Router(),
+		Handler:      handler.Router(idea.NewIdeaServiceClient("", nil)),
 		Addr:         "127.0.0.1:9000",
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
