@@ -43,12 +43,10 @@ var JWTMiddleware = jwtmiddleware.New(jwtmiddleware.Options{
 		if !checkIss {
 			return token, errors.New("invalid issuer found")
 		}
-
 		cert, err := getPemCert(token)
 		if err != nil {
 			panic(err.Error())
 		}
-
 		result, _ := jwt.ParseRSAPublicKeyFromPEM([]byte(cert))
 		return result, nil
 	},
@@ -58,7 +56,6 @@ var JWTMiddleware = jwtmiddleware.New(jwtmiddleware.Options{
 func getPemCert(token *jwt.Token) (string, error) {
 	cert := ""
 	resp, err := http.Get("https://" + os.Getenv("AUTH0_DOMAIN") + "/.well-known/jwks.json")
-
 	if err != nil {
 		return cert, err
 	}
